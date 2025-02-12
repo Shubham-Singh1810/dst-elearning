@@ -1,3 +1,4 @@
+const nodemailer = require("nodemailer");
 exports.sendResponse = (res, code, message, data) => {
     if (data) {
       data = data;
@@ -20,7 +21,7 @@ exports.sendMail = async (Email, subject) => {
     },
   });
   const info = await transporter.sendMail({
-    from: `"The Run Machine" <"tpaunikar92@gmail.com">`,
+    from: `"DST Learning" <"tpaunikar92@gmail.com">`,
     to: Email,
     subject:subject,
     text: subject

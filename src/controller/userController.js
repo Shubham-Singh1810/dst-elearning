@@ -10,7 +10,7 @@ const cloudinary = require("../utils/cloudinary");
 const upload = require("../utils/multer");
 const moment = require("moment");
 
-userController.post("/register", async (req, res) => {
+userController.post("/sign-up", async (req, res) => {
   try {
     let isEmailExist = await User.findOne({ Email: req.body.Email });
     if (isEmailExist) {
@@ -21,10 +21,10 @@ userController.post("/register", async (req, res) => {
       return;
     }
     const code = generateOTP();
-    const userCreated = await userServices.create({ ...req.body, otp: code });
+    const userCreated = await User.create({ ...req.body, otp: code });
     // Send OTP to the user's email
     const response = await sendMail(
-      req.body.Email,
+      req.body.email,
       "The OTP verification code is " + code + " for email verification."
     );
     sendResponse(res, 200, "Success", {
