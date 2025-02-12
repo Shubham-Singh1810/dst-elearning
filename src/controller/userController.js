@@ -39,5 +39,83 @@ userController.post("/sign-up", async (req, res) => {
     });
   }
 });
+userController.post("/resend-otp", async (req, res) => {
+  try {
+    const code = generateOTP();
+    let userDetails = await User.findOne({ email: req.body.email });
+    userDetails = await User.findByIdAndUpdate(userDetails.id, { opt: code }, { new: true });
+    // Send OTP to the user's email
+    const response = await sendMail(
+      req.body.email,
+      "The OTP verification code is " + code + " for email verification."
+    );
+    sendResponse(res, 200, "Success", {
+      message: "Otp send successfully, please check your email!",
+      data: userDetails,
+      statusCode: 200,
+    });
+  } catch (error) {
+    console.log(error);
+    sendResponse(res, 500, "Failed", {
+      message: error.message || "Internal server error",
+    });
+  }
+});
+userController.post("/verify-otp", async (req, res) => {
+  try {
+    let userDetails = await User.findOne({ email: req.body.email, otp: req.body.otp });
+    if (!userDetails) {
+      sendResponse(res, 202, "Success", {
+        message: "Wrong OTP",
+        statusCode: 404,
+      });
+      return;
+    }
+    // Generate JWT token for the new user
+    const token = jwt.sign({ userId: userDetails._id, phoneNumber: userDetails.phoneNumber }, process.env.JWT_KEY);
+    // Store the token in the user object or return it in the response
+    userDetails.token = token;
+    userDetails = await User.findByIdAndUpdate(userDetails.id, { token }, { new: true });
+    sendResponse(res, 200, "Success", {
+      message: "OTP verified successfully",
+      data: userDetails,
+      statusCode: 200,
+    });
+  } catch (error) {
+    console.log(error);
+    sendResponse(res, 500, "Failed", {
+      message: error.message || "Internal server error",
+    });
+  }
+});
+userController.post("/login", async (req, res) => {
+  try {
+    let userDetails = await User.findOne({ email: req.body.email, password: req.body.password });
+    if (!userDetails) {
+      sendResponse(res, 202, "Success", {
+        message: "Invalid Credientials",
+        statusCode: 404,
+      });
+      return;
+    }
+    if (userDetails.isEmailExist) {
+      sendResponse(res, 202, "Success", {
+        message: "Please verify your email",
+        statusCode: 403,
+      });
+      return;
+    }
+    sendResponse(res, 200, "Success", {
+      message: "User logged in successfully",
+      data: userDetails,
+      statusCode: 200,
+    });
+  } catch (error) {
+    console.log(error);
+    sendResponse(res, 500, "Failed", {
+      message: error.message || "Internal server error",
+    });
+  }
+});
 
 module.exports = userController;
