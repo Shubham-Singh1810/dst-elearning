@@ -75,6 +75,7 @@ userController.post("/verify-otp", async (req, res) => {
     const token = jwt.sign({ userId: userDetails._id, phoneNumber: userDetails.phoneNumber }, process.env.JWT_KEY);
     // Store the token in the user object or return it in the response
     userDetails.token = token;
+    userDetails.isEmailVerified = true;
     userDetails = await User.findByIdAndUpdate(userDetails.id, { token }, { new: true });
     sendResponse(res, 200, "Success", {
       message: "OTP verified successfully",
@@ -98,10 +99,10 @@ userController.post("/login", async (req, res) => {
       });
       return;
     }
-    if (userDetails.isEmailExist) {
+    if (!userDetails.isEmailVerified) {
       sendResponse(res, 202, "Success", {
         message: "Please verify your email",
-        statusCode: 403,
+        statusCode: 422,
       });
       return;
     }
