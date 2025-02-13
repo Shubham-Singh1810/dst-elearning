@@ -12,7 +12,7 @@ const moment = require("moment");
 
 userController.post("/sign-up", async (req, res) => {
   try {
-    let isEmailExist = await User.findOne({ Email: req.body.Email });
+    let isEmailExist = await User.findOne({ email: req.body.email });
     if (isEmailExist) {
       sendResponse(res, 202, "Success", {
         message: "This Email Already Exists!",
