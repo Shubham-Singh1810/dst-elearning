@@ -43,7 +43,7 @@ userController.post("/resend-otp", async (req, res) => {
   try {
     const code = generateOTP();
     let userDetails = await User.findOne({ email: req.body.email });
-    userDetails = await User.findByIdAndUpdate(userDetails.id, { opt: code }, { new: true });
+    userDetails = await User.findByIdAndUpdate(userDetails._id, { opt: code }, { new: true });
     // Send OTP to the user's email
     const response = await sendMail(
       req.body.email,
