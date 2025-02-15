@@ -74,8 +74,7 @@ userController.post("/verify-otp", async (req, res) => {
     const token = jwt.sign({ userId: userDetails._id, phoneNumber: userDetails.phoneNumber }, process.env.JWT_KEY);
     // Store the token in the user object or return it in the response
     userDetails.token = token;
-    userDetails.isEmailVerified = true;
-    userDetails = await User.findByIdAndUpdate(userDetails.id, { token }, { new: true });
+    userDetails = await User.findByIdAndUpdate(userDetails.id, { token, isEmailVerified:true }, { new: true });
     sendResponse(res, 200, "Success", {
       message: "OTP verified successfully",
       data: userDetails,
