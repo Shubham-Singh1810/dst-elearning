@@ -116,5 +116,26 @@ userController.post("/login", async (req, res) => {
     });
   }
 });
-
+userController.delete("/delete/:id", async (req, res) => {
+   try {
+      const { id } = req.params;
+      const user = await User.findById(id);
+      if (!user) {
+        return sendResponse(res, 404, "Failed", {
+          message: "User not found",
+        });
+      }
+      await User.findByIdAndDelete(id);
+      sendResponse(res, 200, "Success", {
+        message: "User deleted successfully!",
+        statusCode: 200,
+      });
+    } catch (error) {
+      console.error(error);
+      sendResponse(res, 500, "Failed", {
+        message: error.message || "Internal server error",
+        statusCode: 200,
+      });
+    }
+});
 module.exports = userController;
