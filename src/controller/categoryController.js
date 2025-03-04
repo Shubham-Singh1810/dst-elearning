@@ -43,10 +43,12 @@ categoryController.post("/list", async (req, res) => {
       pageNo=1, 
       pageCount = 10,
       sortByField, 
-      sortByOrder
+      sortByOrder, 
+      type
     } = req.body;
     const query = {};
     if (status) query.status = status; 
+    if (type) query.type = type; 
     if (searchKey) query.name = { $regex: searchKey, $options: "i" }; 
     const sortField = sortByField || "createdAt"; 
     const sortOrder = sortByOrder === "asc" ? 1 : -1; 
