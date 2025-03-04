@@ -37,7 +37,7 @@ bannerController.post("/create", upload.single("image"), async (req, res) => {
 bannerController.post("/list", async (req, res) => {
   try {
     const {
-      searchKey = "", 
+      category,
       status, 
       pageNo=1, 
       pageCount = 10,
@@ -46,7 +46,7 @@ bannerController.post("/list", async (req, res) => {
     } = req.body;
     const query = {};
     if (status) query.status = status; 
-    if (searchKey) query.name = { $regex: searchKey, $options: "i" }; 
+    if (category) query.category = category; 
     const sortField = sortByField || "createdAt"; 
     const sortOrder = sortByOrder === "asc" ? 1 : -1; 
     const sortOption = { [sortField]: sortOrder };
