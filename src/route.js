@@ -11,9 +11,11 @@ const bannerController = require("./controller/bannerController");
 const addressController = require("./controller/addressController");
 const supportController = require("./controller/supportController");
 const venderController = require("./controller/venderController");
+const courseController = require("./controller/courseController");
 
 router.use("/user", userController);
 router.use("/category", categoryController);
+router.use("/course", courseController);
 router.use("/sub-category", subCategoryController);
 router.use("/service", serviceController);
 router.use("/repair", repairController);
