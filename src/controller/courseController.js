@@ -53,12 +53,12 @@ courseController.post("/list", async (req, res) => {
     const sortField = sortByField || "createdAt"; 
     const sortOrder = sortByOrder === "asc" ? 1 : -1; 
     const sortOption = { [sortField]: sortOrder };
-    const courseList = await Category.find(query)
+    const courseList = await Course.find(query)
       .sort(sortOption)
       .limit(parseInt(pageCount))
       .skip(parseInt(pageNo-1) * parseInt(pageCount)); 
-    const totalCount = await Category.countDocuments({});
-    const activeCount = await Category.countDocuments({status:true});
+    const totalCount = await Course.countDocuments({});
+    const activeCount = await Course.countDocuments({status:true});
     sendResponse(res, 200, "Success", {
       message: "Course list retrieved successfully!",
       data: courseList,
