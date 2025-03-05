@@ -74,7 +74,7 @@ userController.post("/verify-otp", async (req, res) => {
     const token = jwt.sign({ userId: userDetails._id, phoneNumber: userDetails.phoneNumber }, process.env.JWT_KEY);
     // Store the token in the user object or return it in the response
     userDetails.token = token;
-    userDetails = await User.findByIdAndUpdate(userDetails.id, { token, isEmailVerified:true }, { new: true });
+    userDetails = await User.findByIdAndUpdate(userDetails.id, { token, isEmailVerified: true }, { new: true });
     sendResponse(res, 200, "Success", {
       message: "OTP verified successfully",
       data: userDetails,
@@ -117,48 +117,48 @@ userController.post("/login", async (req, res) => {
   }
 });
 userController.delete("/delete/:id", async (req, res) => {
-   try {
-      const { id } = req.params;
-      const user = await User.findById(id);
-      if (!user) {
-        return sendResponse(res, 404, "Failed", {
-          message: "User not found",
-        });
-      }
-      await User.findByIdAndDelete(id);
-      sendResponse(res, 200, "Success", {
-        message: "User deleted successfully!",
-        statusCode: 200,
-      });
-    } catch (error) {
-      console.error(error);
-      sendResponse(res, 500, "Failed", {
-        message: error.message || "Internal server error",
-        statusCode: 200,
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id);
+    if (!user) {
+      return sendResponse(res, 404, "Failed", {
+        message: "User not found",
       });
     }
+    await User.findByIdAndDelete(id);
+    sendResponse(res, 200, "Success", {
+      message: "User deleted successfully!",
+      statusCode: 200,
+    });
+  } catch (error) {
+    console.error(error);
+    sendResponse(res, 500, "Failed", {
+      message: error.message || "Internal server error",
+      statusCode: 200,
+    });
+  }
 });
 userController.get("/details/:id", async (req, res) => {
   try {
-     const { id } = req.params;
-     const user = await User.findById(id);
-     if (!user) {
-       return sendResponse(res, 404, "Failed", {
-         message: "User not found",
-       });
-     }
-     
-     sendResponse(res, 200, "Success", {
-      data:user
-       message: "User data retrived successfully!",
-       statusCode: 200,
-     });
-   } catch (error) {
-     console.error(error);
-     sendResponse(res, 500, "Failed", {
-       message: error.message || "Internal server error",
-       statusCode: 200,
-     });
-   }
+    const { id } = req.params;
+    const user = await User.findById(id);
+    if (!user) {
+      return sendResponse(res, 404, "Failed", {
+        message: "User not found",
+      });
+    }
+
+    sendResponse(res, 200, "Success", {
+      data: user,
+      message: "User data retrived successfully!",
+      statusCode: 200,
+    });
+  } catch (error) {
+    console.error(error);
+    sendResponse(res, 500, "Failed", {
+      message: error.message || "Internal server error",
+      statusCode: 200,
+    });
+  }
 });
 module.exports = userController;
