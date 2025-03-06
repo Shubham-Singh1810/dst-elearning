@@ -1,16 +1,14 @@
 const express = require("express");
 const { sendResponse } = require("../utils/common");
 require("dotenv").config();
-const Category = require("../model/category.Schema");
-const Course = require("../model/course.Schema");
 const Batch = require("../model/batch.Schema");
-const categoryController = express.Router();
+const batchController = express.Router();
 require("dotenv").config();
 const cloudinary = require("../utils/cloudinary");
 const upload = require("../utils/multer");
 const SubCategory = require("../model/subCategory.Schema");
 
-categoryController.post("/create", upload.single("image"), async (req, res) => {
+batchController.post("/create", upload.single("image"), async (req, res) => {
   try {
     let obj;
     if (req.file) {
@@ -23,10 +21,10 @@ categoryController.post("/create", upload.single("image"), async (req, res) => {
       });
       obj = { ...req.body, image: image.url };
     }
-    const CategoryCreated = await Category.create(obj);
+    const batchCreated = await Batch.create(obj);
     sendResponse(res, 200, "Success", {
-      message: "Category created successfully!",
-      data: CategoryCreated,
+      message: "Batch created successfully!",
+      data: batchCreated,
       statusCode:200
     });
   } catch (error) {
@@ -37,7 +35,7 @@ categoryController.post("/create", upload.single("image"), async (req, res) => {
     });
   }
 });
-categoryController.post("/list", async (req, res) => {
+batchController.post("/list", async (req, res) => {
   try {
     const {
       searchKey = "", 
@@ -55,15 +53,15 @@ categoryController.post("/list", async (req, res) => {
     const sortField = sortByField || "createdAt"; 
     const sortOrder = sortByOrder === "asc" ? 1 : -1; 
     const sortOption = { [sortField]: sortOrder };
-    const categoryList = await Category.find(query)
+    const batchList = await Batch.find(query)
       .sort(sortOption)
       .limit(parseInt(pageCount))
       .skip(parseInt(pageNo-1) * parseInt(pageCount)); 
-    const totalCount = await Category.countDocuments({});
-    const activeCount = await Category.countDocuments({status:true});
+    const totalCount = await Batch.countDocuments({});
+    const activeCount = await Batch.countDocuments({status:true});
     sendResponse(res, 200, "Success", {
-      message: "Category list retrieved successfully!",
-      data: categoryList,
+      message: "Batch list retrieved successfully!",
+      data: batchList,
       documentCount: {totalCount, activeCount, inactiveCount: totalCount-activeCount},
       statusCode:200
     });
@@ -75,13 +73,13 @@ categoryController.post("/list", async (req, res) => {
     });
   }
 });
-categoryController.put("/update", upload.single("image"), async (req, res) => {
+batchController.put("/update", upload.single("image"), async (req, res) => {
     try {
       const  id  = req.body._id;
-      const category = await Category.findById(id);
-      if (!category) {
+      const batch = await Batch.findById(id);
+      if (!batch) {
         return sendResponse(res, 404, "Failed", {
-          message: "Category not found",
+          message: "Batch not found",
           statusCode:403
         });
       }
@@ -116,7 +114,7 @@ categoryController.put("/update", upload.single("image"), async (req, res) => {
       });
     }
 });
-categoryController.delete("/delete/:id", async (req, res) => {
+batchController.delete("/delete/:id", async (req, res) => {
     try {
       const { id } = req.params;
       const category = await Category.findById(id);
@@ -148,15 +146,14 @@ categoryController.delete("/delete/:id", async (req, res) => {
       });
     }
 });
-categoryController.get("/details/:id",  async (req, res) => {
+batchController.get("/details/:id",  async (req, res) => {
   try {
     const { id } = req.params
     const CategoryDetails = await Category.findOne({_id:id});
-    const CourseList = await Course.find({categoryId:id});
-    const BatchList = await Batch.find({categoryId:id});
+    const SubCategoryList = await SubCategory.find({categoryId:id});
     sendResponse(res, 200, "Success", {
-      message: "Category with course list retrived successfully!",
-      data:{CategoryDetails, CourseList},
+      message: "Category with sub category retrived successfully!",
+      data:{CategoryDetails, SubCategoryList},
       statusCode:200
     });
   } catch (error) {
@@ -168,4 +165,4 @@ categoryController.get("/details/:id",  async (req, res) => {
   }
 });
 
-module.exports = categoryController;
+module.exports = batchController;

@@ -12,10 +12,12 @@ const addressController = require("./controller/addressController");
 const supportController = require("./controller/supportController");
 const venderController = require("./controller/venderController");
 const courseController = require("./controller/courseController");
+const batchController = require("./controller/batchController");
 
 router.use("/user", userController);
 router.use("/category", categoryController);
 router.use("/course", courseController);
+router.use("/batch", batchController);
 router.use("/sub-category", subCategoryController);
 router.use("/service", serviceController);
 router.use("/repair", repairController);
