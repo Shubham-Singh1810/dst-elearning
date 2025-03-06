@@ -86,8 +86,8 @@ batchController.put("/update", upload.single("image"), async (req, res) => {
       let updatedData = { ...req.body };
       if (req.file) {
         // Delete the old image from Cloudinary
-        if (category.image) {
-          const publicId = category.image.split("/").pop().split(".")[0];
+        if (batch.image) {
+          const publicId = batch.image.split("/").pop().split(".")[0];
           await cloudinary.uploader.destroy(publicId, (error, result) => {
             if (error) {
               console.error("Error deleting old image from Cloudinary:", error);
@@ -99,12 +99,12 @@ batchController.put("/update", upload.single("image"), async (req, res) => {
         const image = await cloudinary.uploader.upload(req.file.path);
         updatedData.image = image.url;
       }
-      const updatedCategory = await Category.findByIdAndUpdate(id, updatedData, {
+      const updatedBatch = await Batch.findByIdAndUpdate(id, updatedData, {
         new: true, // Return the updated document
       });
       sendResponse(res, 200, "Success", {
-        message: "Category updated successfully!",
-        data: updatedCategory,
+        message: "Batch updated successfully!",
+        data: updatedBatch,
         statusCode:200
       });
     } catch (error) {
@@ -149,11 +149,15 @@ batchController.delete("/delete/:id", async (req, res) => {
 batchController.get("/details/:id",  async (req, res) => {
   try {
     const { id } = req.params
-    const CategoryDetails = await Category.findOne({_id:id});
-    const SubCategoryList = await SubCategory.find({categoryId:id});
+    const BatchDetails = await Batch.findOne({_id:id});
+      if (!BatchDetails) {
+        return sendResponse(res, 404, "Failed", {
+          message: "Batch not found",
+        });
+      }
     sendResponse(res, 200, "Success", {
-      message: "Category with sub category retrived successfully!",
-      data:{CategoryDetails, SubCategoryList},
+      message: "Batch Details Retrived Successfully",
+      data:BatchDetails,
       statusCode:200
     });
   } catch (error) {

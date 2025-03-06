@@ -35,7 +35,9 @@ const batchSchema = mongoose.Schema({
   duration:{
     type: String,
   },
- 
+  discription:{
+    type:String
+  }
 });
 
 batchSchema.plugin(timestamps);
