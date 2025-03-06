@@ -2,6 +2,7 @@ const express = require("express");
 const { sendResponse } = require("../utils/common");
 require("dotenv").config();
 const Category = require("../model/category.Schema");
+const Course = require("../model/course.Schema");
 const categoryController = express.Router();
 require("dotenv").config();
 const cloudinary = require("../utils/cloudinary");
@@ -150,10 +151,10 @@ categoryController.get("/details/:id",  async (req, res) => {
   try {
     const { id } = req.params
     const CategoryDetails = await Category.findOne({_id:id});
-    const SubCategoryList = await SubCategory.find({categoryId:id});
+    const CourseList = await Course.find({categoryId:id});
     sendResponse(res, 200, "Success", {
-      message: "Category with sub category retrived successfully!",
-      data:{CategoryDetails, SubCategoryList},
+      message: "Category with course list retrived successfully!",
+      data:{CategoryDetails, CourseList},
       statusCode:200
     });
   } catch (error) {
