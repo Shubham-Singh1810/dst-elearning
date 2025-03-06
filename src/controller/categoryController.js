@@ -156,7 +156,7 @@ categoryController.get("/details/:id",  async (req, res) => {
     const BatchList = await Batch.find({categoryId:id});
     sendResponse(res, 200, "Success", {
       message: "Category with course list retrived successfully!",
-      data:{CategoryDetails, CourseList},
+      data:{CategoryDetails, CourseList, BatchList},
       statusCode:200
     });
   } catch (error) {
