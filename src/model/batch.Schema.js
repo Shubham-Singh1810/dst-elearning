@@ -35,7 +35,7 @@ const batchSchema = mongoose.Schema({
   duration:{
     type: String,
   },
-  discription:{
+  description:{
     type:String
   }
 });
