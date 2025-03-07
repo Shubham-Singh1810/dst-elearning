@@ -76,17 +76,17 @@ courseController.post("/list", async (req, res) => {
 courseController.put("/update", upload.single("image"), async (req, res) => {
     try {
       const  id  = req.body._id;
-      const category = await Category.findById(id);
-      if (!category) {
+      const course = await Course.findById(id);
+      if (!course) {
         return sendResponse(res, 404, "Failed", {
-          message: "Category not found",
+          message: "Course not found",
           statusCode:403
         });
       }
       let updatedData = { ...req.body };
       if (req.file) {
         // Delete the old image from Cloudinary
-        if (category.image) {
+        if (course.image) {
           const publicId = category.image.split("/").pop().split(".")[0];
           await cloudinary.uploader.destroy(publicId, (error, result) => {
             if (error) {
@@ -99,12 +99,12 @@ courseController.put("/update", upload.single("image"), async (req, res) => {
         const image = await cloudinary.uploader.upload(req.file.path);
         updatedData.image = image.url;
       }
-      const updatedCategory = await Category.findByIdAndUpdate(id, updatedData, {
+      const updatedCourse = await Course.findByIdAndUpdate(id, updatedData, {
         new: true, // Return the updated document
       });
       sendResponse(res, 200, "Success", {
-        message: "Category updated successfully!",
-        data: updatedCategory,
+        message: "Course updated successfully!",
+        data: updatedCourse,
         statusCode:200
       });
     } catch (error) {
