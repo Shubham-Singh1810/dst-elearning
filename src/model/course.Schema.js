@@ -24,11 +24,33 @@ const courseSchema = mongoose.Schema({
   discountedPrice: {
     type: String,
   },
+  subTitle: {
+    type: String,
+  },
+  rating: {
+    type: String,
+  },
+  instructorName:{
+    type: String,
+  },
+  description:{
+    type: String,
+  },
   categoryId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Category",
     required: true,
   },
+  faq:[
+    {
+      question:{
+        type:String,
+      },
+      answer:{
+        type:String
+      }
+    }
+  ]
 });
 
 courseSchema.plugin(timestamps);

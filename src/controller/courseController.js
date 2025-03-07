@@ -149,7 +149,7 @@ courseController.delete("/delete/:id", async (req, res) => {
 courseController.get("/details/:id",  async (req, res) => {
   try {
     const { id } = req.params
-    const CategoryDetails = await Category.findOne({_id:id});
+    const CategoryDetails = await Course.findOne({_id:id});
     const SubCategoryList = await SubCategory.find({categoryId:id});
     sendResponse(res, 200, "Success", {
       message: "Category with sub category retrived successfully!",
