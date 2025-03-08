@@ -6,7 +6,7 @@ const courseController = express.Router();
 require("dotenv").config();
 const cloudinary = require("../utils/cloudinary");
 const upload = require("../utils/multer");
-const SubCategory = require("../model/subCategory.Schema");
+const Topic = require("../model/topic.Schema");
 
 courseController.post("/create", upload.single("image"), async (req, res) => {
   try {
@@ -149,11 +149,11 @@ courseController.delete("/delete/:id", async (req, res) => {
 courseController.get("/details/:id",  async (req, res) => {
   try {
     const { id } = req.params
-    const CategoryDetails = await Course.findOne({_id:id});
-    const SubCategoryList = await SubCategory.find({categoryId:id});
+    const CourseDetails = await Course.findOne({_id:id});
+    const TopicList = await Topic.find({courseId:id});
     sendResponse(res, 200, "Success", {
-      message: "Category with sub category retrived successfully!",
-      data:{CategoryDetails, SubCategoryList},
+      message: "Course details retrived successfully!",
+      data:{CourseDetails, TopicList},
       statusCode:200
     });
   } catch (error) {

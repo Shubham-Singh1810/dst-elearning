@@ -88,4 +88,4 @@ topicController.post("/create", async (req, res) => {
 //   }
 // });
 
-module.exports = addressController;
+module.exports = topicController;
