@@ -15,6 +15,7 @@ const courseController = require("./controller/courseController");
 const batchController = require("./controller/batchController");
 const topicController = require("./controller/topicController");
 const academyCourseController = require("./controller/academyCourseController");
+const materialController  = require("./controller/materialController");
 
 router.use("/user", userController);
 router.use("/category", categoryController);
@@ -22,6 +23,7 @@ router.use("/course", courseController);
 router.use("/academy-course", academyCourseController);
 router.use("/batch", batchController);
 router.use("/topic", topicController);
+router.use("/material", materialController);
 router.use("/sub-category", subCategoryController);
 router.use("/service", serviceController);
 router.use("/repair", repairController);

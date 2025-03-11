@@ -7,6 +7,7 @@ require("dotenv").config();
 const cloudinary = require("../utils/cloudinary");
 const upload = require("../utils/multer");
 const Topic = require("../model/topic.Schema");
+const Material = require("../model/material.Schema");
 
 academyCourseController.post("/create", upload.single("image"), async (req, res) => {
   try {
@@ -151,9 +152,10 @@ academyCourseController.get("/details/:id",  async (req, res) => {
     const { id } = req.params
     const CourseDetails = await AcademyCourse.findOne({_id:id});
     const TopicList = await Topic.find({courseId:id});
+    const MaterialList = await Material.find({academyCourseId:id});
     sendResponse(res, 200, "Success", {
       message: "Academy Course details retrived successfully!",
-      data:{CourseDetails, TopicList},
+      data:{CourseDetails, TopicList, MaterialList},
       statusCode:200
     });
   } catch (error) {
