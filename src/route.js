@@ -16,12 +16,14 @@ const batchController = require("./controller/batchController");
 const topicController = require("./controller/topicController");
 const academyCourseController = require("./controller/academyCourseController");
 const materialController  = require("./controller/materialController");
+const academyBatchController  = require("./controller/academyBatchController");
 
 router.use("/user", userController);
 router.use("/category", categoryController);
 router.use("/course", courseController);
 router.use("/academy-course", academyCourseController);
 router.use("/batch", batchController);
+router.use("/academy-batch", academyBatchController);
 router.use("/topic", topicController);
 router.use("/material", materialController);
 router.use("/sub-category", subCategoryController);
