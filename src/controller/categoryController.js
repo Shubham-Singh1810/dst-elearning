@@ -4,6 +4,8 @@ require("dotenv").config();
 const Category = require("../model/category.Schema");
 const Course = require("../model/course.Schema");
 const Batch = require("../model/batch.Schema");
+const AcademyBatch = require("../model/academyBatch.Schema");
+const AcademyCourse = require("../model/academyCourse.Schema");
 const categoryController = express.Router();
 require("dotenv").config();
 const cloudinary = require("../utils/cloudinary");
@@ -154,9 +156,11 @@ categoryController.get("/details/:id",  async (req, res) => {
     const CategoryDetails = await Category.findOne({_id:id});
     const CourseList = await Course.find({categoryId:id});
     const BatchList = await Batch.find({categoryId:id});
+    const AcademyBatchList = await AcademyBatch.find({categoryId:id});
+    const AcademyCourseList = await AcademyCourse.find({categoryId:id});
     sendResponse(res, 200, "Success", {
       message: "Category with course list retrived successfully!",
-      data:{CategoryDetails, CourseList, BatchList},
+      data:{CategoryDetails, CourseList, BatchList, AcademyBatchList, AcademyCourseList},
       statusCode:200
     });
   } catch (error) {
