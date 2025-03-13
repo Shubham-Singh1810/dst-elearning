@@ -53,7 +53,7 @@ currentAffairesController.post("/list", async (req, res) => {
       .limit(parseInt(pageCount))
       .skip(parseInt(pageNo-1) * parseInt(pageCount)); 
     sendResponse(res, 200, "Success", {
-      message: "Banner list retrieved successfully!",
+      message: "Current Affair list retrieved successfully!",
       data: currentAffairList,
       statusCode:200
     });
