@@ -9,7 +9,10 @@ const Installation = require("../model/installation.Schema");
 const Service = require("../model/service.Schema");
 const User = require("../model/user.Schema");
 
-const CourseBooking = require("../model/courseBooking.Schema")
+const CourseBooking = require("../model/courseBooking.Schema");
+const BatchBooking = require("../model/batchBooking.Schema");
+const AcademyCourseBooking = require("../model/academyCourseBooking.Schema");
+const AcademyBatchBooking = require("../model/academyBatchBooking.Schema");
 
 bookingController.post("/course", async (req, res) => {
   try {
@@ -27,6 +30,55 @@ bookingController.post("/course", async (req, res) => {
     });
   }
 });
+bookingController.post("/batch", async (req, res) => {
+  try {
+    const booking = await BatchBooking.create(req.body);
+    sendResponse(res, 200, "Success", {
+      message: "Booking created successfully!",
+      data: booking,
+      statusCode: 200,
+    });
+  } catch (error) {
+    console.error(error);
+    sendResponse(res, 500, "Failed", {
+      message: error.message || "Internal server error",
+      statusCode: 500,
+    });
+  }
+});
+bookingController.post("/academy-course", async (req, res) => {
+  try {
+    const booking = await AcademyCourseBooking.create(req.body);
+    sendResponse(res, 200, "Success", {
+      message: "Booking created successfully!",
+      data: booking,
+      statusCode: 200,
+    });
+  } catch (error) {
+    console.error(error);
+    sendResponse(res, 500, "Failed", {
+      message: error.message || "Internal server error",
+      statusCode: 500,
+    });
+  }
+});
+bookingController.post("/academy-batch", async (req, res) => {
+  try {
+    const booking = await AcademyBatchBooking.create(req.body);
+    sendResponse(res, 200, "Success", {
+      message: "Booking created successfully!",
+      data: booking,
+      statusCode: 200,
+    });
+  } catch (error) {
+    console.error(error);
+    sendResponse(res, 500, "Failed", {
+      message: error.message || "Internal server error",
+      statusCode: 500,
+    });
+  }
+});
+
 bookingController.post("/list", async (req, res) => {
   try {
     const bookingList = await Booking.find(req.body).populate({
