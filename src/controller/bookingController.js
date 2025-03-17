@@ -9,12 +9,14 @@ const Installation = require("../model/installation.Schema");
 const Service = require("../model/service.Schema");
 const User = require("../model/user.Schema");
 
-bookingController.post("/create", async (req, res) => {
+const CourseBooking = require("../model/courseBooking.Schema")
+
+bookingController.post("/course", async (req, res) => {
   try {
-    const bookingCreated = await Booking.create(req.body);
+    const courseBooking = await CourseBooking.create(req.body);
     sendResponse(res, 200, "Success", {
       message: "Booking created successfully!",
-      data: bookingCreated,
+      data: courseBooking,
       statusCode: 200,
     });
   } catch (error) {
